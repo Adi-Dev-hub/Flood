@@ -1,0 +1,12 @@
+numpy
+matplotlib
+geopandas
+shapely
+fiona
+pyproj
+rasterio
+PyQt5
+pyqtgraph
+pyinstaller
+scipy
+tifffile
