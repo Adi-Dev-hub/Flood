@@ -28,46 +28,38 @@ slope[negative_mask] = np.nan
 
 # 4. Define slope risk categories
 def classify_slope(slope_data):
-    # Initialize risk array
-    slope_risk = np.zeros_like(slope_data, dtype=int)
+    # Initialize risk array with NaN values
+    slope_risk = np.full_like(slope_data, np.nan, dtype=float)
     
-    # Classify slope into risk levels
-    slope_risk[(slope_data < 5)] = 3  # High flood risk (flat areas)
-    slope_risk[(slope_data >= 5) & (slope_data <= 15)] = 2  # Moderate flood risk
-    slope_risk[(slope_data > 15)] = 1  # Low flood risk (steep areas)
+    # Classify slope into risk levels, skipping NaN values
+    slope_risk[(~np.isnan(slope_data)) & (slope_data < 30)] = 3  # High flood risk (flat areas)
+    slope_risk[(~np.isnan(slope_data)) & (slope_data >= 30) & (slope_data <= 50)] = 2  # Moderate flood risk
+    slope_risk[(~np.isnan(slope_data)) & (slope_data > 50)] = 1  # Low flood risk (steep areas)
     
     return slope_risk
 
 # Classify the slope data
 slope_risk_map = classify_slope(slope)
 
-# 5. Visualize the Slope Map
-fig, ax = plt.subplots(figsize=(10, 10))
+# 5. Visualize Slope Map and Slope Risk Map side by side
+fig, axes = plt.subplots(1, 2, figsize=(18, 9))
 
-# Plot slope with a colormap, ensuring NaN values are rendered as white
+# Plot the Slope Map
 slope_cmap = plt.get_cmap('terrain').copy()
-slope_cmap.set_bad(color='white')  # Set NaN values to white
+slope_cmap.set_bad(color='gray')  # Set NaN values to gray
+img1 = axes[0].imshow(slope, cmap=slope_cmap, interpolation='bilinear', origin='upper')
+axes[0].set_title('Slope Map (NaN Values in Gray)')
+axes[0].axis('off')
+cbar1 = plt.colorbar(img1, ax=axes[0], label='Slope (degrees)')
 
-img = ax.imshow(slope, cmap=slope_cmap, interpolation='bilinear', origin='upper')
-ax.set_title('Slope Map (Negative Values as White)')
-ax.axis('off')
-
-# Add a colorbar for the slope map
-plt.colorbar(img, ax=ax, label='Slope (degrees)')
-plt.show()
-
-# 6. Visualize the Slope Risk Map
-fig, ax = plt.subplots(figsize=(10, 10))
-
-# Define a colormap for risk levels (green for low risk, red for high risk)
+# Plot the Slope Risk Map
 risk_cmap = plt.get_cmap('RdYlGn_r').copy()  # Reverse RdYlGn for correct risk coloring
-risk_cmap.set_bad(color='white')  # Set NaN to white
+risk_cmap.set_bad(color='gray')  # Set NaN to gray
+img2 = axes[1].imshow(slope_risk_map, cmap=risk_cmap, interpolation='bilinear', origin='upper')
+axes[1].set_title('Slope Risk Map (NaN Values in Gray)')
+axes[1].axis('off')
+cbar2 = plt.colorbar(img2, ax=axes[1], label='Slope Risk Level (1=Low, 2=Moderate, 3=High)')
 
-# Plot the slope risk map
-img = ax.imshow(slope_risk_map, cmap=risk_cmap, interpolation='bilinear', origin='upper')
-ax.set_title('Slope Risk Map')
-ax.axis('off')
-
-# Add a colorbar for the risk levels
-cbar = plt.colorbar(img, ax=ax, label='Slope Risk Level (1=Low, 2=Moderate, 3=High)')
+# Adjust layout and display the figure
+plt.tight_layout()
 plt.show()
