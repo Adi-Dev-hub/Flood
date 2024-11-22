@@ -26,7 +26,7 @@ def browse_file(file_type, entry_widget):
 
 # Function to execute the selected script
 def run_file(file_key):
-    """Run the selected GIS file with user-provided file inputs."""
+    """Run the selected GIS file with optional file inputs."""
     try:
         # Get the filename from the dictionary
         filename = gis_files[file_key]
@@ -35,15 +35,15 @@ def run_file(file_key):
         shp_file = shp_entry.get()
         tif_file = tif_entry.get()
         
-        # Check if file inputs are provided
-        if not shp_file or not tif_file:
-            messagebox.showwarning("Input Required", "Please select both .shp and .tif files!")
-            return
+        # Prepare command with optional file inputs
+        command = ["python", filename]
+        if shp_file:
+            command.append(shp_file)
+        if tif_file:
+            command.append(tif_file)
         
-        # Execute the file with file paths as arguments
-        result = subprocess.run(
-            ["python", filename, shp_file, tif_file], capture_output=True, text=True
-        )
+        # Execute the file with optional arguments
+        result = subprocess.run(command, capture_output=True, text=True)
         
         # Display the script's output in the text area
         output_text.delete(1.0, tk.END)  # Clear previous output
@@ -66,7 +66,7 @@ root.geometry("700x500")  # Set the size of the window
 root.configure(bg="#f0f8ff")  # Light blue background
 
 # Title label
-title_label = tk.Label(root, text="GIS Script Executor with File Inputs", font=("Helvetica", 16, "bold"), bg="#f0f8ff", fg="#333")
+title_label = tk.Label(root, text="GIS Script Executor with Optional Inputs", font=("Helvetica", 16, "bold"), bg="#f0f8ff", fg="#333")
 title_label.pack(pady=10)
 
 # Dropdown for selecting GIS functions
@@ -81,7 +81,7 @@ dropdown.config(font=("Helvetica", 10), bg="#e0e0e0", fg="#333")
 dropdown.pack(pady=5)
 
 # Input field for .shp file
-shp_label = tk.Label(root, text="Select .shp File:", font=("Helvetica", 12), bg="#f0f8ff")
+shp_label = tk.Label(root, text="Select .shp File (Optional):", font=("Helvetica", 12), bg="#f0f8ff")
 shp_label.pack(pady=5)
 
 shp_entry = tk.Entry(root, width=50, font=("Helvetica", 10))
@@ -91,7 +91,7 @@ shp_button = tk.Button(root, text="Browse .shp", command=lambda: browse_file("sh
 shp_button.pack(pady=5)
 
 # Input field for .tif file
-tif_label = tk.Label(root, text="Select .tif File:", font=("Helvetica", 12), bg="#f0f8ff")
+tif_label = tk.Label(root, text="Select .tif File (Optional):", font=("Helvetica", 12), bg="#f0f8ff")
 tif_label.pack(pady=5)
 
 tif_entry = tk.Entry(root, width=50, font=("Helvetica", 10))
