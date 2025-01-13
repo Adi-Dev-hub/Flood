@@ -13,7 +13,7 @@ def predict_flood_risk_with_nan(interpolated_rainfall_file, low_risk_threshold, 
     rainfall_data[rainfall_data < 0] = 0
 
     # # Identify and set NaN values
-    # rainfall_data[rainfall_data == 0] = np.nan  # Assuming 0 is considered invalid/NaN
+    rainfall_data[rainfall_data == -1] = np.nan  # Assuming 0 is considered invalid/NaN
 
     # Define flood risk levels based on thresholds
     flood_risk = np.zeros(rainfall_data.shape, dtype=np.uint8)
@@ -23,13 +23,13 @@ def predict_flood_risk_with_nan(interpolated_rainfall_file, low_risk_threshold, 
     flood_risk[np.isnan(rainfall_data)] = 4  # Set NaN values as 4 for custom coloring
 
     # Define colors with NaN (category 4) as gray
-    cmap = ListedColormap(['lightblue', 'yellow', 'orange', 'red', 'gray'])
-    risk_labels = ['No Risk', 'Low Risk', 'Medium Risk', 'High Risk', 'No Data']
+    cmap = ListedColormap([ 'yellow', 'orange', 'red', 'gray'])
+    risk_labels = [ 'Low Risk', 'Medium Risk', 'High Risk', 'No Data']
 
     # Plot flood risk with NaNs in gray
     plt.figure(figsize=(10, 10))
     plt.imshow(flood_risk, cmap=cmap, origin='upper', extent=(src.bounds.left, src.bounds.right, src.bounds.bottom, src.bounds.top))
-    cbar = plt.colorbar(ticks=[0, 1, 2, 3, 4], label="Flood Risk Level")
+    cbar = plt.colorbar(ticks=[ 1, 2, 3, 4], label="Flood Risk Level")
     cbar.ax.set_yticklabels(risk_labels)
 
     plt.xlabel("Longitude")
@@ -38,5 +38,5 @@ def predict_flood_risk_with_nan(interpolated_rainfall_file, low_risk_threshold, 
     plt.show()
 
 # Usage example
-interpolated_rainfall_file = 'interpolated_rainfall_resized.tif'
-predict_flood_risk_with_nan(interpolated_rainfall_file, low_risk_threshold=10, medium_risk_threshold=20, high_risk_threshold=24)
+interpolated_rainfall_file = 'data/qinterpol.tif'
+predict_flood_risk_with_nan(interpolated_rainfall_file, low_risk_threshold=0, medium_risk_threshold=20, high_risk_threshold=35)

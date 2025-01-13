@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from osgeo import gdal
 
-def combine_and_display_rgb_image(lulc_file):
+def analyze_lulc_colors(lulc_file):
     # Open the LULC raster file with GDAL
     dataset = gdal.Open(lulc_file)
     if dataset is None:
@@ -13,45 +13,69 @@ def combine_and_display_rgb_image(lulc_file):
     print(f"Number of bands: {num_bands}")
     
     if num_bands < 3:
-        print("The file doesn't have enough bands to form an RGB image.")
-        return
+        raise ValueError("The file doesn't have enough bands to form an RGB image.")
 
     # Read the bands into separate channels (assuming the first 3 bands are RGB)
-    red_band = dataset.GetRasterBand(1).ReadAsArray()
-    green_band = dataset.GetRasterBand(2).ReadAsArray()
-    blue_band = dataset.GetRasterBand(3).ReadAsArray()
+    bands = []
+    for i in range(1, 4):  # First 3 bands for RGB
+        band = dataset.GetRasterBand(i)
+        band_data = band.ReadAsArray()
 
-    # Check the type and shape of each band
-    print("Red band type:", red_band.dtype)
-    print("Green band type:", green_band.dtype)
-    print("Blue band type:", blue_band.dtype)
-    print("Red band shape:", red_band.shape)
-    print("Green band shape:", green_band.shape)
-    print("Blue band shape:", blue_band.shape)
+        # Handle NoData values
+        nodata = band.GetNoDataValue()
+        if nodata is not None:
+            band_data[band_data == nodata] = 0
 
-    # Set NoData values to 0 for proper visualization
-    red_band = np.nan_to_num(red_band, nan=0)
-    green_band = np.nan_to_num(green_band, nan=0)
-    blue_band = np.nan_to_num(blue_band, nan=0)
-
-    # Normalize the bands to 0-255 range (if they are float)
-    red_band = np.clip(red_band, 0, 255).astype(np.uint8)
-    green_band = np.clip(green_band, 0, 255).astype(np.uint8)
-    blue_band = np.clip(blue_band, 0, 255).astype(np.uint8)
+        # Normalize if needed and convert to uint8
+        band_data = np.clip(band_data, 0, 255).astype(np.uint8)
+        bands.append(band_data)
 
     # Stack the RGB channels to create a color image
-    rgb_image = np.dstack((red_band, green_band, blue_band))
+    rgb_image = np.dstack(bands)
 
-    # Display using matplotlib
+    # Flatten the RGB image to a 2D array of pixels (each row is [R, G, B])
+    flattened_pixels = rgb_image.reshape(-1, 3)
+
+    # Find unique colors and their counts
+    unique_colors, counts = np.unique(flattened_pixels, axis=0, return_counts=True)
+
+    # Create a dictionary with indices assigned to each unique color
+    color_to_index = {tuple(color): index for index, color in enumerate(unique_colors)}
+
+    # Total number of pixels in the raster
+    total_pixels = rgb_image.shape[0] * rgb_image.shape[1]
+
+    # Verify if the sum of all counts equals the total number of pixels
+    assert np.sum(counts) == total_pixels, "Pixel counts do not match the total number of pixels!"
+    assert len(color_to_index) == len(unique_colors), "Mismatch in dictionary size and unique colors!"
+
+    print(f"Total unique colors: {len(unique_colors)}")
+    print(f"Total pixels: {total_pixels}")
+    print("Verification successful: Pixel counts match the total number of pixels.")
+    print("Verification successful: Dictionary key-value pairs match the number of unique colors.")
+
+    # Input field to query the RGB value
+    while True:
+        query = input("Enter an RGB value (e.g., 255,255,255) to get its assigned integer, or type 'exit' to quit: ")
+        if query.lower() == 'exit':
+            break
+        try:
+            rgb = tuple(map(int, query.split(',')))
+            if rgb in color_to_index:
+                print(f"Assigned integer for {rgb}: {color_to_index[rgb]}")
+            else:
+                print(f"RGB value {rgb} not found in the dataset.")
+        except ValueError:
+            print("Invalid input. Please enter RGB values in the format 'R,G,B'.")
+    
+    # Display the original RGB image
     plt.imshow(rgb_image)
-    plt.title("RGB Image")
+    plt.title("Original RGB Image")
     plt.axis('off')  # Hide axes
     plt.show()
-
-    
 
 # Path to your LULC raster file
 lulc_file = 'data/data.tif'
 
-# Call the function to combine and display the RGB image
-combine_and_display_rgb_image(lulc_file)
+# Call the function to analyze the LULC raster
+analyze_lulc_colors(lulc_file)
