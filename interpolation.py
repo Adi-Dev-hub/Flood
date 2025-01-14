@@ -49,7 +49,8 @@ output_width, output_height = dem_shape  # Match DEM resolution
 
 # Perform interpolation using gdal.Grid
 output_raster_path = ""  # Empty string for in-memory raster
-algorithm = "invdist:power=2:smoothing=1.0"  # Inverse distance weighting
+algorithm = "invdist:power=2"  # Inverse distance weighting
+# algorithm = "invdist:power=2:smoothing=1.0"  # Inverse distance weighting
 
 grid_ds = gdal.Grid(
     output_raster_path,
@@ -112,7 +113,7 @@ plt.tight_layout()
 plt.show()
 
 # ===== Optionally Save as TIFF =====
-save_as_tiff = True  # Set this flag to True if you want to save the file
+save_as_tiff = False  # Set this flag to True if you want to save the file
 
 if save_as_tiff:
     # Define output file path
