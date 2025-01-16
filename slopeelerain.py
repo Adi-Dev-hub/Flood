@@ -100,7 +100,7 @@ plt.colorbar(img1, ax=axes[0], label='Slope (degrees)')
 
 # Combined Risk Map
 combined_cmap = ListedColormap([ 'yellow', 'orange', 'red', 'gray'])
-combined_labels = [ 'Moderate Risk', 'High Risk', 'No Data']
+combined_labels = [ 'Low Risk','Moderate Risk', 'High Risk', 'No Data']
 img2 = axes[1].imshow(combined_risk_map, cmap=combined_cmap, origin='upper', extent=(
     transform[2], transform[2] + transform[0] * combined_risk_map.shape[1],
     transform[5] + transform[4] * combined_risk_map.shape[0], transform[5]

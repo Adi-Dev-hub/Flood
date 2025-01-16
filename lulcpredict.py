@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
 # 1. Load the LULC Map
-lulc_file_path = 'path_to_lulc_map.tif'
+lulc_file_path = 'data/PuneLuLc.tif'
 with rasterio.open(lulc_file_path) as lulc_src:
     lulc_data = lulc_src.read(1)  # Read the LULC raster data
     lulc_transform = lulc_src.transform
