@@ -1,3 +1,5 @@
+#interpollate rainfall
+
 import numpy as np
 import rasterio
 from scipy.ndimage import zoom

@@ -32,17 +32,19 @@ def run_file(file_key):
         filename = gis_files[file_key]
         
         # Get file inputs from the entry widgets
-        shp_file = shp_entry.get()
-        tif_file = tif_entry.get()
+        shp_file = shp_entry.get().strip()
+        tif_file = tif_entry.get().strip()
         
-        # Prepare command with optional file inputs
-        command = ["python", filename]
-        if shp_file:
-            command.append(shp_file)
-        if tif_file:
-            command.append(tif_file)
+        # Use default values if no file is provided
+        if not shp_file:
+            shp_file = "pune.shp"  # Default .shp placeholder
+        if not tif_file:
+            tif_file = "pune.tif"  # Default .tif placeholder
         
-        # Execute the file with optional arguments
+        # Prepare the command with file inputs
+        command = ["python", filename, shp_file, tif_file]
+        
+        # Execute the script
         result = subprocess.run(command, capture_output=True, text=True)
         
         # Display the script's output in the text area
@@ -62,11 +64,11 @@ def run_file(file_key):
 # Create the GUI
 root = tk.Tk()
 root.title("GIS File Selector and Processor")
-root.geometry("700x500")  # Set the size of the window
+root.geometry("750x600")  # Set the size of the window
 root.configure(bg="#f0f8ff")  # Light blue background
 
 # Title label
-title_label = tk.Label(root, text="GIS Script Executor with Optional Inputs", font=("Helvetica", 16, "bold"), bg="#f0f8ff", fg="#333")
+title_label = tk.Label(root, text="GIS Script Executor with File Inputs", font=("Helvetica", 16, "bold"), bg="#f0f8ff", fg="#333")
 title_label.pack(pady=10)
 
 # Dropdown for selecting GIS functions
@@ -84,7 +86,10 @@ dropdown.pack(pady=5)
 shp_label = tk.Label(root, text="Select .shp File (Optional):", font=("Helvetica", 12), bg="#f0f8ff")
 shp_label.pack(pady=5)
 
-shp_entry = tk.Entry(root, width=50, font=("Helvetica", 10))
+shp_entry = tk.Entry(root, width=50, font=("Helvetica", 10), fg="#999")
+shp_entry.insert(0, "Default: pune.shp")  # Placeholder text
+shp_entry.bind("<FocusIn>", lambda event: shp_entry.delete(0, tk.END) if shp_entry.get() == "Default: pune.shp" else None)
+shp_entry.bind("<FocusOut>", lambda event: shp_entry.insert(0, "Default: pune.shp") if not shp_entry.get() else None)
 shp_entry.pack(pady=5)
 
 shp_button = tk.Button(root, text="Browse .shp", command=lambda: browse_file("shp", shp_entry), bg="#4caf50", fg="white", relief="raised")
@@ -94,7 +99,10 @@ shp_button.pack(pady=5)
 tif_label = tk.Label(root, text="Select .tif File (Optional):", font=("Helvetica", 12), bg="#f0f8ff")
 tif_label.pack(pady=5)
 
-tif_entry = tk.Entry(root, width=50, font=("Helvetica", 10))
+tif_entry = tk.Entry(root, width=50, font=("Helvetica", 10), fg="#999")
+tif_entry.insert(0, "Default: pune.tif")  # Placeholder text
+tif_entry.bind("<FocusIn>", lambda event: tif_entry.delete(0, tk.END) if tif_entry.get() == "Default: pune.tif" else None)
+tif_entry.bind("<FocusOut>", lambda event: tif_entry.insert(0, "Default: pune.tif") if not tif_entry.get() else None)
 tif_entry.pack(pady=5)
 
 tif_button = tk.Button(root, text="Browse .tif", command=lambda: browse_file("tif", tif_entry), bg="#4caf50", fg="white", relief="raised")
@@ -111,7 +119,7 @@ run_button.pack(pady=10)
 output_label = tk.Label(root, text="Script Output:", font=("Helvetica", 12), bg="#f0f8ff")
 output_label.pack(pady=5)
 
-output_text = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=80, height=15, font=("Courier", 10), bg="#fff")
+output_text = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=85, height=15, font=("Courier", 10), bg="#fff")
 output_text.pack(pady=10)
 
 # Start the GUI loop
