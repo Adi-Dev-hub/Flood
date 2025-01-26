@@ -33,7 +33,7 @@ def classify_slope(slope_data):
 slope_risk_map = classify_slope(slope)
 
 # Load the Interpolated Rainfall Data (same as previous)
-interpolated_rainfall_file = 'interpolated_rainfall_resized.tif'
+interpolated_rainfall_file = 'data/rainfall_clipped.tif'
 with rasterio.open(interpolated_rainfall_file) as src:
     rainfall_data = src.read(1).astype(float)  # Ensure float type for NaN handling
     transform = src.transform
@@ -42,9 +42,9 @@ rainfall_data[rainfall_data < 0] = 0
 
 # Define rainfall flood risk categories (same as previous)
 flood_risk_map = np.zeros_like(rainfall_data, dtype=np.uint8)
-flood_risk_map[rainfall_data >= 26] = 3  # High risk
-flood_risk_map[(rainfall_data >= 22) & (rainfall_data < 26)] = 2  # Medium risk
-flood_risk_map[(rainfall_data < 22)] = 1  # Low risk
+flood_risk_map[rainfall_data >= 20] = 3  # High risk
+flood_risk_map[(rainfall_data >= 18) & (rainfall_data < 20)] = 2  # Medium risk
+flood_risk_map[(rainfall_data < 18)] = 1  # Low risk
 flood_risk_map[np.isnan(rainfall_data)] = 4  # No Data
 
 # **Elevation Risk Classification**
