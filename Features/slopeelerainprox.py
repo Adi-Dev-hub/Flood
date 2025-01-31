@@ -33,7 +33,7 @@ def classify_slope(slope_data):
 slope_risk_map = classify_slope(slope)
 
 # Load the Interpolated Rainfall Data
-interpolated_rainfall_file = 'data/qinterpol.tif'
+interpolated_rainfall_file = 'data/rainfall_clipped.tif'
 with rasterio.open(interpolated_rainfall_file) as src:
     rainfall_data = src.read(1).astype(float)  # Ensure float type for NaN handling
     transform = src.transform
@@ -63,7 +63,7 @@ def classify_elevation(elevation_data):
 elevation_risk_map = classify_elevation(smoothed_data)
 
 # Load and Validate Proximity Map
-proximity_file_path = 'data/proximity.tif'
+proximity_file_path = 'data/Cproximity.tif'
 with rasterio.open(proximity_file_path) as src:
     proximity_data = src.read(1).astype(float)  # Ensure float type for NaN handling
 
