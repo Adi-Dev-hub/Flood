@@ -13,3 +13,5 @@ data/PuneLuLc_with_integers.tif
 data/qinterpol.tif
 data/rainfall_clipped.tif
 data/rainfall_clipped_noS.tif
+data/rainfall_clipped_noS.tif.aux.xml
+data/Cproximity.tif

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>661</width>
+    <height>407</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>661</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFRZA">
+    <property name="title">
+     <string>FRZA</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuInterpolation">
+    <property name="title">
+     <string>Interpolation</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuProximity">
+    <property name="title">
+     <string>Proximity</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuSlope">
+    <property name="title">
+     <string>Slope</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuClipping">
+    <property name="title">
+     <string>Clipping</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuLuLc_indexing">
+    <property name="title">
+     <string>LuLc indexing</string>
+    </property>
+   </widget>
+   <addaction name="menuFRZA"/>
+   <addaction name="menuInterpolation"/>
+   <addaction name="menuProximity"/>
+   <addaction name="menuSlope"/>
+   <addaction name="menuClipping"/>
+   <addaction name="menuLuLc_indexing"/>
+  </widget>
+  <action name="actionFRZA">
+   <property name="text">
+    <string>FRZA</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
