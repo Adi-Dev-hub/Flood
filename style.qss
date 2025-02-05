@@ -1,0 +1,73 @@
+/* General styling */
+QMainWindow {
+    background-color: #2E3440;
+    color: white;
+}
+
+/* Menu Bar */
+QMenuBar {
+    background-color: #3B4252;
+    color: white;
+    font-size: 14px;
+    padding: 4px;
+}
+
+QMenuBar::item {
+    background: transparent;
+    padding: 5px 10px;
+    margin: 2px;
+}
+
+QMenuBar::item:selected {
+    background: #4C566A;
+    border-radius: 4px;
+}
+
+/* Drop-down Menus */
+QMenu {
+    background-color: #434C5E;
+    border: 1px solid #4C566A;
+    color: white;
+    font-size: 14px;
+}
+
+QMenu::item {
+    padding: 5px 20px;
+    background: transparent;
+}
+
+QMenu::item:selected {
+    background: #5E81AC;
+    border-radius: 4px;
+}
+
+/* Status Bar */
+QStatusBar {
+    background-color: #3B4252;
+    color: white;
+    font-size: 12px;
+}
+
+/* QPushButton */
+QPushButton {
+    background-color: #5E81AC;
+    color: white;
+    border: 1px solid #81A1C1;
+    border-radius: 6px;
+    padding: 6px;
+    font-size: 14px;
+}
+
+QPushButton:hover {
+    background-color: #81A1C1;
+}
+
+QPushButton:pressed {
+    background-color: #4C566A;
+}
+
+/* QWidget */
+QWidget {
+    font-family: "Arial";
+    font-size: 14px;
+}
