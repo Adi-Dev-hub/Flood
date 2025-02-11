@@ -7,7 +7,7 @@ lulc_file = "data/PuneLuLc_with_integers.tif"
 output_proximity_file = "data/Cproximity.tif"  # Optional output file for proximity raster
 
 # Target values in the 4th band of LULC
-target_values = [352, 338]
+target_values = [330, 316]
 
 # Load LULC dataset
 lulc_dataset = gdal.Open(lulc_file)
@@ -25,12 +25,8 @@ print(f"  Total target pixels: {np.sum(mask_data)}")
 
 # Create an in-memory raster for mask
 driver = gdal.GetDriverByName("MEM")
-mask_dataset = driver.Create(
-    "", lulc_dataset.RasterXSize, lulc_dataset.RasterYSize, 1, gdal.GDT_Byte
-)
-mask_dataset.SetGeoTransform(lulc_geo_transform)
-mask_dataset.SetProjection(lulc_projection)
-mask_dataset.GetRasterBand(1).WriteArray(mask_data)
+
+
 
 # Create an in-memory raster for proximity
 proximity_dataset = driver.Create(
@@ -41,9 +37,9 @@ proximity_dataset.SetProjection(lulc_projection)
 
 # Compute proximity
 gdal.ComputeProximity(
-    mask_dataset.GetRasterBand(1),
+    lulc_dataset.GetRasterBand(4),
     proximity_dataset.GetRasterBand(1),
-    ["DISTUNITS=PIXEL"]
+    ["DISTUNITS=GEO", "NODATA=0", "VALUES=330,316"],
 )
 
 # Read proximity data
@@ -89,5 +85,4 @@ plt.show()
 
 # Clean up
 lulc_dataset = None
-mask_dataset = None
 proximity_dataset = None

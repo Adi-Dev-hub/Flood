@@ -15,3 +15,4 @@ data/rainfall_clipped.tif
 data/rainfall_clipped_noS.tif
 data/rainfall_clipped_noS.tif.aux.xml
 data/Cproximity.tif
+data/clipped_proximity.tif

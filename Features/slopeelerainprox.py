@@ -63,7 +63,7 @@ def classify_elevation(elevation_data):
 elevation_risk_map = classify_elevation(smoothed_data)
 
 # Load and Validate Proximity Map
-proximity_file_path = 'data/Cproximity.tif'
+proximity_file_path = 'data/proximity.tif'
 with rasterio.open(proximity_file_path) as src:
     proximity_data = src.read(1).astype(float)  # Ensure float type for NaN handling
 
@@ -74,7 +74,7 @@ if np.nanmax(proximity_data) > 1 or np.nanmin(proximity_data) < 0:
 
 # Handle uniform data case
 if np.nanmax(proximity_data) == np.nanmin(proximity_data):
-    proximity_data[:] = 0.5  # Assign a default value
+    proximity_data[:] = np.nan  # Assign a default value
 
 # Define Proximity Risk Categories
 proximity_risk_map = np.zeros_like(proximity_data, dtype=int)
