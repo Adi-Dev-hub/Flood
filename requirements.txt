@@ -1,12 +1,10 @@
 numpy
 matplotlib
-geopandas
-shapely
-fiona
-pyproj
 rasterio
-PyQt5
+shapely
+pyproj
+PyQt6
 pyqtgraph
 pyinstaller
 scipy
-tifffile
+PySide6
