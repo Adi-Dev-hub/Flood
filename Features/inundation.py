@@ -24,8 +24,8 @@ def create_inundation_map(dem_path, output_path, water_level=2.0):
         profile.update(dtype=rasterio.uint8, count=1)
 
         # Save the inundation mask as a new GeoTIFF
-        with rasterio.open(output_path, 'w', **profile) as output:
-            output.write(inundation_mask, 1)
+        # with rasterio.open(output_path, 'w', **profile) as output:
+        #     output.write(inundation_mask, 1)
 
     # Plot the DEM and the inundation mask for visualization
     plt.figure(figsize=(12, 6))
@@ -46,6 +46,6 @@ def create_inundation_map(dem_path, output_path, water_level=2.0):
     plt.show()
 
 # Example usage
-dem_file = "path/to/your/dem.tif"  # Replace with the path to your DEM file
+dem_file = "data/puneDem.tif"  # Replace with the path to your DEM file
 output_file = "path/to/save/inundation_map.tif"  # Replace with the path to save the output map
 create_inundation_map(dem_file, output_file, water_level=2.0)
