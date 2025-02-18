@@ -49,8 +49,8 @@ output_width, output_height = dem_shape  # Match DEM resolution
 
 # Perform interpolation using gdal.Grid
 output_raster_path = ""  # Empty string for in-memory raster
-algorithm = "invdist:power=2"  # Inverse distance weighting
-# algorithm = "invdist:power=2:smoothing=1.0"  # Inverse distance weighting
+# algorithm = "invdist:power=2"  # Inverse distance weighting
+algorithm = "invdist:power=2:smoothing=1.0"  # Inverse distance weighting
 
 grid_ds = gdal.Grid(
     output_raster_path,
