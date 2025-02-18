@@ -13,7 +13,18 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QGraphicsView" name="graphicsView">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>1</y>
+      <width>661</width>
+      <height>331</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -33,11 +44,13 @@
     <property name="title">
      <string>Interpolation</string>
     </property>
+    <addaction name="actionOpen_Raster"/>
    </widget>
    <widget class="QMenu" name="menuProximity">
     <property name="title">
      <string>Proximity</string>
     </property>
+    <addaction name="actionOpen_Shape"/>
    </widget>
    <widget class="QMenu" name="menuSlope">
     <property name="title">
@@ -64,6 +77,16 @@
   <action name="actionFRZA">
    <property name="text">
     <string>FRZA</string>
+   </property>
+  </action>
+  <action name="actionOpen_Raster">
+   <property name="text">
+    <string>Open_Raster</string>
+   </property>
+  </action>
+  <action name="actionOpen_Shape">
+   <property name="text">
+    <string>Open_shape</string>
    </property>
   </action>
  </widget>
