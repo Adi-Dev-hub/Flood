@@ -1,24 +1,11 @@
-import sys
 import numpy as np
 import rasterio
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from scipy.ndimage import gaussian_filter
 
-# Check for required arguments and assign file paths
-if len(sys.argv) < 8:
-    print("Usage: python slopeelerainprox.py <dem_file_path> <rainfall_file_path> <proximity_file_path> <elevation_weight> <slope_weight> <proximity_weight> <rainfall_weight>")
-    sys.exit(1)
-
-dem_file_path = sys.argv[1]
-interpolated_rainfall_file = sys.argv[2]
-proximity_file_path = sys.argv[3]
-elevation_weight = float(sys.argv[4])
-slope_weight = float(sys.argv[5])
-proximity_weight = float(sys.argv[6])
-rainfall_weight = float(sys.argv[7])
-
 # Load the DEM for Slope and Elevation Analysis
+dem_file_path = 'data/puneDem.tif'
 with rasterio.open(dem_file_path) as dem:
     dem_data = dem.read(1).astype(float)  # Convert to float for NaN handling
 
@@ -46,6 +33,7 @@ def classify_slope(slope_data):
 slope_risk_map = classify_slope(slope)
 
 # Load the Interpolated Rainfall Data
+interpolated_rainfall_file = 'data/rainfall_clipped.tif'
 with rasterio.open(interpolated_rainfall_file) as src:
     rainfall_data = src.read(1).astype(float)  # Ensure float type for NaN handling
     transform = src.transform
@@ -75,6 +63,7 @@ def classify_elevation(elevation_data):
 elevation_risk_map = classify_elevation(smoothed_data)
 
 # Load and Validate Proximity Map
+proximity_file_path = 'data/proximity.tif'
 with rasterio.open(proximity_file_path) as src:
     proximity_data = src.read(1).astype(float)  # Ensure float type for NaN handling
 
@@ -132,10 +121,10 @@ combined_risk_map = combine_risks_weighted(
     flood_risk_map,
     elevation_risk_map,
     proximity_risk_map,
-    weight_slope=slope_weight,
-    weight_rainfall=rainfall_weight,
-    weight_elevation=elevation_weight,
-    weight_proximity=proximity_weight
+    weight_slope=0.2,
+    weight_rainfall=0.35,
+    weight_elevation=0.2,
+    weight_proximity=0.25
 )
 
 # Visualization

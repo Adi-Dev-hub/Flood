@@ -26,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>508</width>
-     <height>33</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDisplay">
@@ -35,12 +35,24 @@
     </property>
     <addaction name="actionShow"/>
    </widget>
+   <widget class="QMenu" name="menuFRZI">
+    <property name="title">
+     <string>FGIS</string>
+    </property>
+    <addaction name="actionFRIZ"/>
+   </widget>
    <addaction name="menuDisplay"/>
+   <addaction name="menuFRZI"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionShow">
    <property name="text">
     <string>Show</string>
+   </property>
+  </action>
+  <action name="actionFRIZ">
+   <property name="text">
+    <string>FRIZ</string>
    </property>
   </action>
  </widget>
