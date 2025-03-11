@@ -6,11 +6,11 @@ from matplotlib.colors import ListedColormap
 from scipy.ndimage import gaussian_filter
 
 # Check for required arguments: we need 15 in total.
-if len(sys.argv) < 16:
+if len(sys.argv) < 19:
     print("Usage: python slopeelerainprox.py <dem_file_path> <rainfall_file_path> <proximity_file_path> "
           "<elevation_weight> <slope_weight> <proximity_weight> <rainfall_weight> "
           "<middle_lower_elev> <middle_upper_elev> <middle_lower_slope> <middle_upper_slope> <middle_lower_rain> <middle_upper_rain>  <middle_lower_prox> <middle_upper_prox>"
-          )
+          "<High> <Medium> <Low>")
     sys.exit(1)
 
 # File paths
@@ -33,6 +33,11 @@ rainfall_low   = float(sys.argv[12])
 rainfall_high  = float(sys.argv[13])
 proximity_low  = float(sys.argv[14])
 proximity_high = float(sys.argv[15])
+
+#Colors for the risk levels
+high_risk = sys.argv[16]
+medium_risk = sys.argv[17]
+low_risk = sys.argv[18]
 
 # ----- DEM & Slope Calculation -----
 with rasterio.open(dem_file_path) as dem:
@@ -150,7 +155,7 @@ axes[0].axis('off')
 plt.colorbar(img1, ax=axes[0], label='Slope (degrees)')
 
 # Combined Risk Map Visualization
-combined_cmap = ListedColormap(['yellow', 'orange', 'red', 'gray'])
+combined_cmap = ListedColormap([low_risk, medium_risk, high_risk, 'gray'])
 img2 = axes[1].imshow(combined_risk_map, cmap=combined_cmap, origin='upper', extent=(
     transform[2], transform[2] + transform[0] * combined_risk_map.shape[1],
     transform[5] + transform[4] * combined_risk_map.shape[0], transform[5]

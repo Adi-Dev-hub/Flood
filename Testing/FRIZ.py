@@ -22,6 +22,13 @@ class FileInputDialog(QDialog, Ui_Dialog):
         self.toolButton.clicked.connect(lambda: self.select_file(self.lineEdit))
         self.toolButton_2.clicked.connect(lambda: self.select_file(self.lineEdit_2))
         self.toolButton_3.clicked.connect(lambda: self.select_file(self.lineEdit_3))
+
+        # Assume you want these default hex values: 
+        self.lineEdit_4.setText("#FF0000")
+        self.lineEdit_5.setText("#FFA500")
+        self.lineEdit_6.setText("#FFFF00" )
+
+        # Connect color selection buttons to color selection functions
         self.toolButton_4.clicked.connect(lambda: self.select_color_and_update_line_edit(self.lineEdit_4))
         self.toolButton_5.clicked.connect(lambda: self.select_color_and_update_line_edit(self.lineEdit_5))
         self.toolButton_6.clicked.connect(lambda: self.select_color_and_update_line_edit(self.lineEdit_6))
