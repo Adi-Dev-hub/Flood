@@ -4,7 +4,7 @@ from osgeo import gdal
 from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsPixmapItem, QGraphicsView, QSizePolicy
 from PySide6.QtGui import QImage, QPixmap, QPainter, QColor
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile, Qt, QTimer
+from PySide6.QtCore import QFile, Qt, QTimer, QEvent
 
 def loadUi(ui_file, baseinstance=None):
     """Custom loadUi function for PySide6, similar to uic.loadUi in PyQt6."""
@@ -28,18 +28,18 @@ class RasterViewer(QMainWindow):
         # Load UI from the raster.ui file
         loadUi("C:/Users/Admin/Documents/GitHub/Flood/Testing/raster.ui", self)
 
-        # Enable smooth rendering
+        # Enable smooth rendering and set background
         self.graphicsView.setRenderHints(QPainter.Antialiasing | QPainter.SmoothPixmapTransform)
-        # Set a light gray background
         self.graphicsView.setBackgroundBrush(QColor(200, 200, 200))
-        # Allow the view to expand
         self.graphicsView.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        # self.graphicsView.setMinimumSize(600, 400)
+
+        # Install an event filter on the viewport to catch wheel events for zooming
+        self.graphicsView.viewport().installEventFilter(self)
 
         # Load and display the raster
         self.load_raster(raster_path)
 
-        # Use a timer to adjust the view after the layout settles
+        # Use a timer to adjust the view after layout settles
         QTimer.singleShot(0, self.adjustView)
 
     def load_raster(self, raster_path):
@@ -67,6 +67,12 @@ class RasterViewer(QMainWindow):
         raster_data = np.nan_to_num(raster_data, nan=0).astype(np.uint8)
         raster_data = np.ascontiguousarray(raster_data)
 
+        self.raster_data = raster_data  # store for later use in plotting
+
+        # Use GetGeoTransform() to retrieve the affine transformation
+        self.transform = dataset.GetGeoTransform()
+        dataset = None  # Close the dataset
+
         # Create QImage from the raster data (using copy() to ensure proper memory handling)
         height, width = raster_data.shape
         qimage = QImage(raster_data.data, width, height, width, QImage.Format_Grayscale8).copy()
@@ -93,6 +99,19 @@ class RasterViewer(QMainWindow):
         # Force the view to fit the raster image while keeping aspect ratio
         if hasattr(self, "item") and self.item is not None:
             self.graphicsView.fitInView(self.item, Qt.KeepAspectRatio)
+
+    def eventFilter(self, obj, event):
+        # Catch wheel events on the graphicsView's viewport to implement zooming.
+        if obj == self.graphicsView.viewport() and event.type() == QEvent.Wheel:
+            zoomInFactor = 1.25
+            zoomOutFactor = 1 / zoomInFactor
+            if event.angleDelta().y() > 0:
+                factor = zoomInFactor
+            else:
+                factor = zoomOutFactor
+            self.graphicsView.scale(factor, factor)
+            return True  # event handled
+        return super().eventFilter(obj, event)
 
     def resizeEvent(self, event):
         # On window resize, adjust the view to fit the raster
