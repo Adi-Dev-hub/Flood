@@ -3,87 +3,72 @@ import matplotlib.pyplot as plt
 from osgeo import gdal
 
 def clip_rainfall_to_dem(dem_path, rainfall_path):
-    """
-    Clips the rainfall raster to the extent of the DEM's valid region.
-
-    Parameters:
-    - dem_path (str): Path to the DEM raster file.
-    - rainfall_path (str): Path to the interpolated rainfall raster file.
-
-    Returns:
-    - tuple: Clipped rainfall array, geotransform, and projection for visualization.
-    """
-    # Open the DEM file
+    print(f"Opening DEM file: {dem_path}")
     dem_ds = gdal.Open(dem_path)
     if dem_ds is None:
-        raise FileNotFoundError(f"DEM file not found at path: {dem_path}")
+        raise FileNotFoundError(f"DEM file not found: {dem_path}")
     
-    # Read DEM data as an array
     dem_raster_data = dem_ds.ReadAsArray().astype(float)
-    dem_raster_data[dem_raster_data < 0] = np.nan  # Set negative values to NaN (NoData)
+    dem_nodata = dem_ds.GetRasterBand(1).GetNoDataValue()
+    print(f"DEM NoData value: {dem_nodata}")
+    if dem_nodata is not None:
+        dem_raster_data[dem_raster_data == dem_nodata] = np.nan  # Convert NoData values to NaN
     
-    # Open the Rainfall file
+    print(f"Opening Rainfall file: {rainfall_path}")
     rainfall_ds = gdal.Open(rainfall_path)
     if rainfall_ds is None:
-        raise FileNotFoundError(f"Rainfall file not found at path: {rainfall_path}")
+        raise FileNotFoundError(f"Rainfall file not found: {rainfall_path}")
     
-    # Read Rainfall data as an array
     rainfall_raster_data = rainfall_ds.ReadAsArray().astype(float)
-    
-    # Validate that the dimensions match
     if dem_raster_data.shape != rainfall_raster_data.shape:
         raise ValueError("DEM and Rainfall rasters must have the same dimensions.")
     
-    # Clip rainfall data using DEM's valid region
+    print("Clipping rainfall data using DEM's valid region...")
     rainfall_clipped = np.where(np.isnan(dem_raster_data), np.nan, rainfall_raster_data)
-
-    # Get geotransform and projection from the DEM
+    
     geotransform = dem_ds.GetGeoTransform()
     projection = dem_ds.GetProjection()
     
-    # Close datasets
     dem_ds = None
     rainfall_ds = None
-
+    
+    print("Clipping complete.")
     return rainfall_clipped, geotransform, projection
 
-def display_grayscale_map(raster_data, geotransform):
-    """
-    Displays the raster data as a grayscale map.
+def save_raster(output_path, array, reference_ds, save_raster=True, format="GTiff"):
+    if not save_raster:
+        print("Saving skipped as save_raster is False.")
+        return None
+    
+    print(f"Saving raster to: {output_path}")
+    driver = gdal.GetDriverByName(format)
+    cols, rows = array.shape[1], array.shape[0]
+    out_ds = driver.Create(output_path, cols, rows, 1, gdal.GDT_Float32)
+    if out_ds is None:
+        raise RuntimeError(f"Failed to create output raster: {output_path}")
+    
+    out_ds.SetGeoTransform(reference_ds.GetGeoTransform())
+    out_ds.SetProjection(reference_ds.GetProjection())
+    
+    out_band = out_ds.GetRasterBand(1)
+    out_band.WriteArray(array)
+    out_band.SetNoDataValue(-1)  # Assign NoData value explicitly for missing data
+    out_band.FlushCache()
+    out_ds = None
+    
+    print("Raster saved successfully.")
+    return output_path
 
-    Parameters:
-    - raster_data (numpy.ndarray): The raster data to display.
-    - geotransform (tuple): Geotransform of the raster for extent.
-    """
-    # Calculate the extent
-    xmin = geotransform[0]
-    xres = geotransform[1]
-    ymax = geotransform[3]
-    yres = geotransform[5]
-    xmax = xmin + (raster_data.shape[1] * xres)
-    ymin = ymax + (raster_data.shape[0] * yres)
-    extent = [xmin, xmax, ymin, ymax]
-
-    # Display the raster
-    plt.figure(figsize=(10, 8))
-    plt.imshow(raster_data, cmap="gray", extent=extent, origin="upper")
-    plt.colorbar(label="Rainfall (mm)")
-    plt.title("Clipped Rainfall Grid (Grayscale)")
-    plt.xlabel("Longitude")
-    plt.ylabel("Latitude")
-    plt.show()
-
-# Example usage
 if __name__ == "__main__":
-    # Paths to your DEM and rainfall raster files
-    dem_file_path = "data/puneDem.tif"  # Replace with the path to your DEM file
-    rainfall_file_path = "data/Cproximity.tif"  # Replace with the path to your rainfall file
-
-    # Clip rainfall to DEM
+    dem_file_path = "data/puneDem.tif"
+    rainfall_file_path = "data/Cproximity.tif"
+    output_path = "data/clipped_proximity.tif"
+    
     try:
+        print("Starting clipping process...")
         clipped_rainfall, geotransform, projection = clip_rainfall_to_dem(dem_file_path, rainfall_file_path)
-        
-        # Display the clipped rainfall as a grayscale map
-        display_grayscale_map(clipped_rainfall, geotransform)
+        print("Saving clipped raster...")
+        save_raster(output_path, clipped_rainfall, gdal.Open(dem_file_path))
+        print("Process completed successfully.")
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error encountered: {e}")
