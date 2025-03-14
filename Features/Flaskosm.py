@@ -1,3 +1,5 @@
+import sys
+import webbrowser
 from osgeo import gdal
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,12 +8,17 @@ import folium
 import overpy
 from affine import Affine
 from flask import Flask, render_template_string
+import threading
 
 # -------------------------------
-# File Paths and Parameters
+# Get File Path from Command Line Argument
 # -------------------------------
-risk_map_path = "C:/Users/Admin/Documents/GitHub/Flood/Testing/combined_risk_output.tif"  # Input GeoTIFF risk map
-png_path = "combined_risk_output.png"       # Temporary PNG output for overlay
+if len(sys.argv) < 2:
+    print("Usage: python Flaskosm.py <path_to_risk_map>")
+    sys.exit(1)
+
+risk_map_path = sys.argv[1]  # File path provided by the GUI
+png_path = "combined_risk_output.png"  # Temporary PNG output for overlay
 
 # -------------------------------
 # Read the Risk Map using GDAL
@@ -21,26 +28,22 @@ if dataset is None:
     raise FileNotFoundError(f"Cannot open risk map: {risk_map_path}")
 
 band = dataset.GetRasterBand(1)
-risk_data = band.ReadAsArray().astype(np.uint8)  # Assumes risk values: 1 (Low), 2 (Medium), 3 (High), 4 (No Data)
-transform = dataset.GetGeoTransform()  # GDAL transform tuple
+risk_data = band.ReadAsArray().astype(np.uint8)
+transform = dataset.GetGeoTransform()
 affine_transform = Affine.from_gdal(*transform)
 
-# Calculate geographic bounds from the transform
-min_x = transform[0]                # Left (longitude)
-max_y = transform[3]                # Top (latitude)
-pixel_width = transform[1]
-pixel_height = transform[5]         # (usually negative)
+# Calculate geographic bounds
+min_x, pixel_width, _, max_y, _, pixel_height = transform
 rows, cols = risk_data.shape
-max_x = min_x + cols * pixel_width   # Right (longitude)
-min_y = max_y + rows * pixel_height  # Bottom (latitude); note: pixel_height is negative
+max_x = min_x + cols * pixel_width
+min_y = max_y + rows * pixel_height  # pixel_height is negative
 
 dataset = None  # Close the dataset
 
 # -------------------------------
 # Save the Risk Map as PNG for Overlay
 # -------------------------------
-# Define a colormap: 1 = Yellow (Low), 2 = Orange (Medium), 3 = Red (High), 4 = Gray (No Data)
-cmap = ListedColormap(['yellow', 'orange', 'red', 'gray'])
+cmap = ListedColormap(['yellow', 'orange', 'red', 'gray'])  # Define a colormap
 plt.imsave(png_path, risk_data, cmap=cmap)
 
 # -------------------------------
@@ -50,7 +53,6 @@ center_lat = (min_y + max_y) / 2
 center_lon = (min_x + max_x) / 2
 m = folium.Map(location=[center_lat, center_lon], zoom_start=12)
 
-# Folium expects bounds in the form: [[south, west], [north, east]]
 image_bounds = [[min_y, min_x], [max_y, max_x]]
 folium.raster_layers.ImageOverlay(
     name="Flood Risk Map",
@@ -65,7 +67,6 @@ folium.raster_layers.ImageOverlay(
 # -------------------------------
 # Query Hospitals using Overpass API
 # -------------------------------
-# Use the risk map's bounds for the query (Overpass uses: south, west, north, east)
 api = overpy.Overpass()
 query = f"""
 node["amenity"="hospital"]({min_y},{min_x},{max_y},{max_x});
@@ -73,45 +74,32 @@ out;
 """
 result = api.query(query)
 
-# Create separate FeatureGroups for hospitals by risk level
+# Feature groups for hospitals by risk level
 fg_low = folium.FeatureGroup(name="Low Risk Hospitals")
 fg_medium = folium.FeatureGroup(name="Moderate Risk Hospitals")
 fg_high = folium.FeatureGroup(name="High Risk Hospitals")
 
-# Inverse affine transform to convert geographic coordinates to pixel indices
-inv_affine = ~affine_transform
+inv_affine = ~affine_transform  # Inverse transform to map coordinates to pixels
 
 for node in result.nodes:
-    hosp_lat = float(node.lat)
-    hosp_lon = float(node.lon)
-    # Convert (lon, lat) to pixel (col, row)
+    hosp_lat, hosp_lon = float(node.lat), float(node.lon)
     col, row = inv_affine * (hosp_lon, hosp_lat)
-    col = int(round(col))
-    row = int(round(row))
-    # Skip if outside raster bounds
+    col, row = int(round(col)), int(round(row))
+
     if row < 0 or row >= risk_data.shape[0] or col < 0 or col >= risk_data.shape[1]:
-        continue
+        continue  # Skip if out of bounds
+
     risk_value = risk_data[row, col]
     name = node.tags.get("name", "Hospital")
-    if risk_value == 1:
-        fg_low.add_child(folium.Marker(
-            location=[hosp_lat, hosp_lon],
-            popup=name,
-            icon=folium.Icon(color='green', icon='info-sign')
-        ))
-    elif risk_value == 2:
-        fg_medium.add_child(folium.Marker(
-            location=[hosp_lat, hosp_lon],
-            popup=name,
-            icon=folium.Icon(color='orange', icon='info-sign')
-        ))
-    elif risk_value == 3:
-        fg_high.add_child(folium.Marker(
-            location=[hosp_lat, hosp_lon],
-            popup=name,
-            icon=folium.Icon(color='red', icon='info-sign')
-        ))
-    # If risk_value == 4 ("No Data"), we ignore it
+    
+    icon_color = "green" if risk_value == 1 else "orange" if risk_value == 2 else "red"
+    fg = fg_low if risk_value == 1 else fg_medium if risk_value == 2 else fg_high
+
+    fg.add_child(folium.Marker(
+        location=[hosp_lat, hosp_lon],
+        popup=name,
+        icon=folium.Icon(color=icon_color, icon='info-sign')
+    ))
 
 m.add_child(fg_low)
 m.add_child(fg_medium)
@@ -125,8 +113,12 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    map_html = m.get_root().render()
-    return render_template_string(map_html)
+    return render_template_string(m.get_root().render())
+
+def run_server():
+    """Run Flask server on a separate thread."""
+    app.run(debug=False, use_reloader=False)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    threading.Thread(target=run_server, daemon=True).start()
+    webbrowser.open("http://127.0.0.1:5000/")

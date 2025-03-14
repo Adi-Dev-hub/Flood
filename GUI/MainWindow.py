@@ -8,44 +8,62 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)  # Set up the UI from the converted code
 
-        # Initialize QProcess variable
-        self.frizProcess = None
+        # Initialize QProcess variables
+        self.processFRZI = None
+        self.processOsm = None
+        self.processInterpolation = None
 
-        # Connect the FRZI action to run_friz() method.
-        # The generated UI code should have created self.actionFRZI.
+        # Connect actions to respective methods
         try:
             self.actionFRZI.triggered.connect(self.run_friz)
+            self.actionFRZ_IA.triggered.connect(self.run_osm)
+            self.actionInterpolation.triggered.connect(self.run_interpolation)
         except AttributeError:
-            print("actionFRZI not found in the UI!")
+            print("One or more actions not found in the UI!")
 
     def run_friz(self):
         """Run the external FRIZ.py script using QProcess."""
-        self.frizProcess = QProcess(self)
-        self.frizProcess.readyReadStandardOutput.connect(
-            lambda: print(self.frizProcess.readAllStandardOutput().data().decode())
+        self.processFRZI = self.run_script("C:/Users/Admin/Documents/GitHub/Flood/GUI/FRIZ.py")
+
+    def run_osm(self):
+        """Run the external Osm.py script using QProcess."""
+        self.processOsm = self.run_script("C:/Users/Admin/Documents/GitHub/Flood/GUI/Osm.py")
+
+    def run_interpolation(self):
+        """Run the external Interpolation.py script using QProcess."""
+        self.processInterpolation = self.run_script("C:/Users/Admin/Documents/GitHub/Flood/GUI/Interpolation.py")
+
+    def run_script(self, script_path):
+        """Helper function to run an external script with QProcess."""
+        process = QProcess(self)
+        process.readyReadStandardOutput.connect(
+            lambda: print(process.readAllStandardOutput().data().decode())
         )
-        self.frizProcess.readyReadStandardError.connect(
-            lambda: print(self.frizProcess.readAllStandardError().data().decode())
+        process.readyReadStandardError.connect(
+            lambda: print(process.readAllStandardError().data().decode())
         )
-        script_path = r"C:/Users/Admin/Documents/GitHub/Flood/GUI/FRIZ.py"
-        self.frizProcess.start(sys.executable, [script_path])
+        process.start(sys.executable, [script_path])
+        return process
 
     def closeEvent(self, event):
-        """Ensure the external process is terminated before closing."""
-        if self.frizProcess is not None and self.frizProcess.state() != QProcess.NotRunning:
-            self.frizProcess.kill()
-            self.frizProcess.waitForFinished(1000)
+        """Ensure all external processes are terminated before closing."""
+        for process in [self.processFRZI, self.processOsm, self.processInterpolation]:
+            if process is not None and process.state() != QProcess.NotRunning:
+                process.kill()
+                process.waitForFinished(1000)
         event.accept()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-     # Load QSS stylesheet
+    
+    # Load QSS stylesheet
     try:
         with open("C:/Users/Admin/Documents/GitHub/Flood/GUI/style.qss", "r") as f:
             qss = f.read()
             app.setStyleSheet(qss)
     except FileNotFoundError:
         print("Warning: style.qss not found. Skipping stylesheet.")
+    
     window = MainWindow()
     window.show()
     sys.exit(app.exec())
