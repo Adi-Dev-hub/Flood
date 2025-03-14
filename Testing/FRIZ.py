@@ -33,6 +33,9 @@ class FileInputDialog(QDialog, Ui_Dialog):
         self.toolButton_5.clicked.connect(lambda: self.select_color_and_update_line_edit(self.lineEdit_5))
         self.toolButton_6.clicked.connect(lambda: self.select_color_and_update_line_edit(self.lineEdit_6))
 
+        # Connect the new save file button (toolButton_7) to open a save dialog and update lineEdit_7
+        self.toolButton_7.clicked.connect(lambda: self.select_save_file(self.lineEdit_7))
+
         # Connect the AHP calculation button to update the weight boxes
         self.pushButton_2.clicked.connect(self.calculate_ahp)
         
@@ -80,6 +83,11 @@ class FileInputDialog(QDialog, Ui_Dialog):
         CR = CI / RI if RI != 0 else 0.0
 
         return ahp_weights, CR
+    def select_save_file(self, line_edit):
+        """Opens a save file dialog and sets the selected output file path into the given QLineEdit."""
+        file_path, _ = QFileDialog.getSaveFileName(self, "Save File", "", "TIFF Files (*.tif);;All Files (*.*)")
+        if file_path:
+            line_edit.setText(file_path)
 
     def calculate_ahp(self):
         """Calculates AHP weights from the tableWidget and updates the double spin boxes."""
@@ -127,6 +135,9 @@ class FileInputDialog(QDialog, Ui_Dialog):
         High = self.lineEdit_4.text()
         Medium = self.lineEdit_5.text()
         Low = self.lineEdit_6.text()
+
+        # Save file path
+        save_file = self.lineEdit_7.text()
         # Create and configure QProcess
         self.process = QProcess(self)
         self.process.readyReadStandardOutput.connect(
@@ -145,7 +156,8 @@ class FileInputDialog(QDialog, Ui_Dialog):
             middle_lower_slope, middle_upper_slope,
             middle_lower_rain, middle_upper_rain,
             middle_lower_prox, middle_upper_prox,
-            High, Medium, Low
+            High, Medium, Low,
+            save_file
         ]
         self.process.start(sys.executable, args)
 

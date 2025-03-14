@@ -5,8 +5,9 @@ shapely
 fiona
 pyproj
 rasterio
-PyQt5
+pyside6
 pyqtgraph
 pyinstaller
 scipy
 tifffile
+flask
