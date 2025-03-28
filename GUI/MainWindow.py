@@ -18,8 +18,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.actionFRZI.triggered.connect(self.run_friz)
             self.actionFRZ_IA.triggered.connect(self.run_osm)
             self.actionInterpolation.triggered.connect(self.run_interpolation)
+            self.actionTifdis.triggered.connect(self.run_tifdis)
         except AttributeError:
             print("One or more actions not found in the UI!")
+    def run_tifdis(self):
+        """Run the external Tifdis.py script using QProcess."""
+        self.processTifdis = self.run_script("C:/Users/Admin/Documents/GitHub/Flood/GUI/Tifdis.py")
 
     def run_friz(self):
         """Run the external FRIZ.py script using QProcess."""
