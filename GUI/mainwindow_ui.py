@@ -32,6 +32,10 @@ class Ui_MainWindow(object):
         self.actionFRZ_IA.setObjectName(u"actionFRZ_IA")
         self.actionInterpolation = QAction(MainWindow)
         self.actionInterpolation.setObjectName(u"actionInterpolation")
+        self.actionClipping_Raster = QAction(MainWindow)
+        self.actionClipping_Raster.setObjectName(u"actionClipping_Raster")
+        self.actionSlope = QAction(MainWindow)
+        self.actionSlope.setObjectName(u"actionSlope")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         MainWindow.setCentralWidget(self.centralwidget)
@@ -56,6 +60,8 @@ class Ui_MainWindow(object):
         self.menuFRZA.addAction(self.actionFRZ_IA)
         self.menuFile.addAction(self.actionOpen)
         self.menuInterpolation.addAction(self.actionInterpolation)
+        self.menuInterpolation.addAction(self.actionClipping_Raster)
+        self.menuInterpolation.addAction(self.actionSlope)
 
         self.retranslateUi(MainWindow)
 
@@ -68,6 +74,8 @@ class Ui_MainWindow(object):
         self.actionOpen.setText(QCoreApplication.translate("MainWindow", u"Open", None))
         self.actionFRZ_IA.setText(QCoreApplication.translate("MainWindow", u"FRZ-IA", None))
         self.actionInterpolation.setText(QCoreApplication.translate("MainWindow", u"Interpolation", None))
+        self.actionClipping_Raster.setText(QCoreApplication.translate("MainWindow", u"Clipping Raster", None))
+        self.actionSlope.setText(QCoreApplication.translate("MainWindow", u"Slope", None))
         self.menuFRZA.setTitle(QCoreApplication.translate("MainWindow", u"Flood-Analysis", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuInterpolation.setTitle(QCoreApplication.translate("MainWindow", u"Tools", None))

@@ -19,11 +19,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.actionFRZ_IA.triggered.connect(self.run_osm)
             self.actionInterpolation.triggered.connect(self.run_interpolation)
             self.actionOpen.triggered.connect(self.run_tifdis)
+            self.actionClipping_Raster.triggered.connect(self.run_clipping)
+            self.actionSlope.triggered.connect(self.run_slope)
         except AttributeError:
             print("One or more actions not found in the UI!")
+    def run_slope(self):
+        """Run the external Slope.py script using QProcess."""
+        self.processSlope = self.run_script("C:/Users/Admin/Documents/GitHub/Flood/GUI/Slope.py")        
+    def run_clipping(self):
+        """Run the external Clipping.py script using QProcess."""
+        self.processClipping = self.run_script("C:/Users/Admin/Documents/GitHub/Flood/GUI/Clipping.py")
     def run_tifdis(self):
         """Run the external Tifdis.py script using QProcess."""
-        self.processTifdis = self.run_script("C:/Users/Admin/Documents/GitHub/Flood/GUI/Tifdis.py")
+        self.processTifdis = self.run_script("C:/Users/Admin/Documents/GitHub/Flood/GUI/RasterDisplay.py")
 
     def run_friz(self):
         """Run the external FRIZ.py script using QProcess."""

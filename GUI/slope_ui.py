@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'Clipping.ui'
+## Form generated from reading UI file 'Slope.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.8.1
 ##
@@ -24,7 +24,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(759, 518)
+        Dialog.resize(425, 393)
         self.gridLayout = QGridLayout(Dialog)
         self.gridLayout.setObjectName(u"gridLayout")
         self.scrollArea = QScrollArea(Dialog)
@@ -32,7 +32,7 @@ class Ui_Dialog(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 735, 459))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 401, 334))
         self.gridLayout_2 = QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.tabWidget = QTabWidget(self.scrollAreaWidgetContents)
@@ -65,11 +65,6 @@ class Ui_Dialog(object):
 
         self.gridLayout_4.addLayout(self.horizontalLayout_4, 1, 0, 1, 1)
 
-        self.label_2 = QLabel(self.groupBox)
-        self.label_2.setObjectName(u"label_2")
-
-        self.gridLayout_4.addWidget(self.label_2, 2, 0, 1, 1)
-
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.lineEdit_2 = QLineEdit(self.groupBox)
@@ -90,6 +85,11 @@ class Ui_Dialog(object):
 
         self.gridLayout_4.addWidget(self.label_3, 4, 0, 1, 1)
 
+        self.label_2 = QLabel(self.groupBox)
+        self.label_2.setObjectName(u"label_2")
+
+        self.gridLayout_4.addWidget(self.label_2, 2, 0, 1, 1)
+
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.lineEdit_3 = QLineEdit(self.groupBox)
@@ -99,26 +99,6 @@ class Ui_Dialog(object):
 
 
         self.gridLayout_4.addLayout(self.horizontalLayout_3, 5, 0, 1, 1)
-
-        self.label_4 = QLabel(self.groupBox)
-        self.label_4.setObjectName(u"label_4")
-
-        self.gridLayout_4.addWidget(self.label_4, 6, 0, 1, 1)
-
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.lineEdit_4 = QLineEdit(self.groupBox)
-        self.lineEdit_4.setObjectName(u"lineEdit_4")
-
-        self.horizontalLayout.addWidget(self.lineEdit_4)
-
-        self.toolButton_3 = QToolButton(self.groupBox)
-        self.toolButton_3.setObjectName(u"toolButton_3")
-
-        self.horizontalLayout.addWidget(self.toolButton_3)
-
-
-        self.gridLayout_4.addLayout(self.horizontalLayout, 7, 0, 1, 1)
 
 
         self.gridLayout_3.addWidget(self.groupBox, 0, 1, 1, 1)
@@ -165,11 +145,9 @@ class Ui_Dialog(object):
         self.groupBox.setTitle(QCoreApplication.translate("Dialog", u"GroupBox", None))
         self.label.setText(QCoreApplication.translate("Dialog", u"Input Raster", None))
         self.toolButton.setText(QCoreApplication.translate("Dialog", u"...", None))
-        self.label_2.setText(QCoreApplication.translate("Dialog", u"Extent Raster", None))
         self.toolButton_2.setText(QCoreApplication.translate("Dialog", u"...", None))
         self.label_3.setText(QCoreApplication.translate("Dialog", u"no data value", None))
-        self.label_4.setText(QCoreApplication.translate("Dialog", u"Save Raster path", None))
-        self.toolButton_3.setText(QCoreApplication.translate("Dialog", u"...", None))
+        self.label_2.setText(QCoreApplication.translate("Dialog", u"Save Raster path", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("Dialog", u"Input", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("Dialog", u"Log", None))
         self.pushButton.setText(QCoreApplication.translate("Dialog", u"Run", None))
