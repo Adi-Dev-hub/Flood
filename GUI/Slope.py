@@ -37,7 +37,7 @@ class SlopeDialog(QDialog):
         # If nodata_value is empty, pass a default like "None"
         nodata_value = nodata_value if nodata_value else "-1"
 
-        cmd = ["python", "C:/Users/Admin/Documents/GitHub/Flood/Features/slope.py", input_path, output_path, nodata_value]
+        cmd = ["python", "./Features/slope.py", input_path, output_path, nodata_value]
 
         try:
             result = subprocess.run(cmd, capture_output=True, text=True)

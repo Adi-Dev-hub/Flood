@@ -197,7 +197,7 @@ if __name__ == "__main__":
 
     # Try to load the style.qss file
     try:
-        with open("C:/Users/Admin/Documents/GitHub/Flood/GUI/style.qss", "r") as f:
+        with open("./GUI/style.qss", "r") as f:
             qss = f.read()
             app.setStyleSheet(qss)
     except Exception as e:

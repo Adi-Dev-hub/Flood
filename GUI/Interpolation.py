@@ -37,7 +37,7 @@ class InterpolationDialog(QDialog):
         print(f"Running script with parameters:\n Rainfall: {rainfall_path}\n Extent Raster: {extent_raster_path}\n No Data Value: {no_data_value}\n Smoothened: {smoothened}")
         
         # Execute the interpolation script
-        script_path = "C:/Users/Admin/Documents/GitHub/Flood/Features/interpolation.py"
+        script_path = "./Features/interpolation.py"
         try:
             subprocess.run(["python", script_path, rainfall_path, extent_raster_path, no_data_value, str(smoothened)], check=True)
         except subprocess.CalledProcessError as e:

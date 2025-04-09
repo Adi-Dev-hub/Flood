@@ -55,7 +55,7 @@ class ClippingDialog(QDialog):
             QMessageBox.warning(self, "Missing Input", "Please fill in all fields.")
             return
 
-        script_path = r"C:\Users\Admin\Documents\GitHub\Flood\Features\clipping.py"
+        script_path = r".\Features\clipping.py"
 
         try:
             result = subprocess.run(

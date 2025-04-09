@@ -70,7 +70,7 @@ if __name__ == "__main__":
     
     # Load QSS stylesheet
     try:
-        with open("C:/Users/Admin/Documents/GitHub/Flood/GUI/style.qss", "r") as f:
+        with open(".\GUI\style.qss", "r") as f:
             qss = f.read()
             app.setStyleSheet(qss)
     except FileNotFoundError:
