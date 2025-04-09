@@ -1,10 +1,19 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from osgeo import gdal
+import sys
+
+if len(sys.argv) < 5:
+        print("Usage: python interpolation.py <rainfall_shapefile> <extent_raster> <no_data_value> <smoothened>")
+        sys.exit(1)
+
+dem_file_path = sys.argv[2]
+shapefile_path = sys.argv[1]
+smoothened = bool(sys.argv[4])
 
 # ===== Load and Process DEM =====
 # Path to your DEM file
-dem_file_path = "data/puneDem.tif"  # Ensure this path is correct
+# dem_file_path = "data/puneDem.tif"  # Ensure this path is correct
 
 # Open the DEM file
 dem_ds = gdal.Open(dem_file_path)
@@ -40,7 +49,7 @@ dem_raster_data[dem_raster_data < 0] = np.nan  # Treat negative values as NoData
 
 # ===== Interpolate Rainfall =====
 # Path to your shapefile
-shapefile_path = "data/DRMS_station.shp"  # Replace with your actual shapefile path
+# shapefile_path = "data/DRMS_station.shp"  # Replace with your actual shapefile path
 rainfall_attribute = "rainfall"  # Replace with the name of your rainfall attribute
 
 # Use DEM extent and resolution for interpolation
@@ -49,8 +58,13 @@ output_width, output_height = dem_shape  # Match DEM resolution
 
 # Perform interpolation using gdal.Grid
 output_raster_path = ""  # Empty string for in-memory raster
-# algorithm = "invdist:power=2"  # Inverse distance weighting
-algorithm = "invdist:power=2:smoothing=1.0"  # Inverse distance weighting
+#algorithm = "invdist:power=2"  # Inverse distance weighting
+# algorithm = "invdist:power=2:smoothing=1.0"  # Inverse distance weighting
+
+# Interpolation using gdal.Grid
+# algorithm = "invdist:power=2"
+if smoothened:
+    algorithm = "invdist:power=2:smoothing=1.0"  # Inverse distance weighting
 
 grid_ds = gdal.Grid(
     output_raster_path,

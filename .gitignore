@@ -16,3 +16,6 @@ data/rainfall_clipped_noS.tif
 data/rainfall_clipped_noS.tif.aux.xml
 data/Cproximity.tif
 data/clipped_proximity.tif
+Testing/combined_risk_output.tif
+combined_risk_output.tif
+Testing/test.tif

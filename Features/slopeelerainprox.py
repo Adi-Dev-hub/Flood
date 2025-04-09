@@ -6,11 +6,12 @@ from matplotlib.colors import ListedColormap
 from scipy.ndimage import gaussian_filter
 
 # Check for required arguments: we need 15 in total.
-if len(sys.argv) < 19:
+if len(sys.argv) < 20:
     print("Usage: python slopeelerainprox.py <dem_file_path> <rainfall_file_path> <proximity_file_path> "
           "<elevation_weight> <slope_weight> <proximity_weight> <rainfall_weight> "
           "<middle_lower_elev> <middle_upper_elev> <middle_lower_slope> <middle_upper_slope> <middle_lower_rain> <middle_upper_rain>  <middle_lower_prox> <middle_upper_prox>"
-          "<High> <Medium> <Low>")
+          "<High> <Medium> <Low>"
+          "<save_file>")
     sys.exit(1)
 
 # File paths
@@ -38,6 +39,9 @@ proximity_high = float(sys.argv[15])
 high_risk = sys.argv[16]
 medium_risk = sys.argv[17]
 low_risk = sys.argv[18]
+
+# Save file path
+save_file = sys.argv[19]
 
 # ----- DEM & Slope Calculation -----
 with rasterio.open(dem_file_path) as dem:
@@ -166,3 +170,31 @@ cbar2 = plt.colorbar(img2, ax=axes[1], ticks=[1, 2, 3, 4], label='Combined Risk 
 cbar2.ax.set_yticklabels(['Low Risk', 'Moderate Risk', 'High Risk', 'No Data'])
 plt.tight_layout()
 plt.show()
+
+
+# ----- Save Output as TIFF (using rasterio for saving) -----
+# Here, instead of using GDAL, we use rasterio's writing functionality.
+import rasterio
+from rasterio.transform import from_origin
+
+# Use the transform from the rainfall file (assumed to match the DEM extent)
+# output_file = "combined_risk_output.tif"
+
+# Determine dimensions from the combined risk map
+height, width = combined_risk_map.shape
+
+# Create a new raster using rasterio
+new_meta = {
+    'driver': 'GTiff',
+    'height': height,
+    'width': width,
+    'count': 1,
+    'dtype': 'float32',
+    'crs': None,  # If you want to add a CRS, you can extract it from the DEM
+    'transform': transform
+}
+
+with rasterio.open(save_file, 'w', **new_meta) as dst:
+    dst.write(combined_risk_map.astype('float32'), 1)
+
+print(f"Output saved as {save_file}")

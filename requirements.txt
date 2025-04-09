@@ -3,8 +3,10 @@ matplotlib
 rasterio
 shapely
 pyproj
-PyQt6
+rasterio
+pyside6
 pyqtgraph
 pyinstaller
 scipy
-PySide6
+tifffile
+flask

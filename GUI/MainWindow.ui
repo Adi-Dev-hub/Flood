@@ -29,6 +29,7 @@
      <string>Flood-Analysis</string>
     </property>
     <addaction name="actionFRZI"/>
+    <addaction name="actionFRZ_IA"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -36,8 +37,17 @@
     </property>
     <addaction name="actionOpen"/>
    </widget>
+   <widget class="QMenu" name="menuInterpolation">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionInterpolation"/>
+    <addaction name="actionClipping_Raster"/>
+    <addaction name="actionSlope"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuFRZA"/>
+   <addaction name="menuInterpolation"/>
   </widget>
   <action name="actionFRZI">
    <property name="text">
@@ -47,6 +57,26 @@
   <action name="actionOpen">
    <property name="text">
     <string>Open</string>
+   </property>
+  </action>
+  <action name="actionFRZ_IA">
+   <property name="text">
+    <string>FRZ-IA</string>
+   </property>
+  </action>
+  <action name="actionInterpolation">
+   <property name="text">
+    <string>Interpolation</string>
+   </property>
+  </action>
+  <action name="actionClipping_Raster">
+   <property name="text">
+    <string>Clipping Raster</string>
+   </property>
+  </action>
+  <action name="actionSlope">
+   <property name="text">
+    <string>Slope</string>
    </property>
   </action>
  </widget>
