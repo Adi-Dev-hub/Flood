@@ -25,7 +25,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(1098, 900)
+        Dialog.resize(1098, 972)
         self.gridLayout = QGridLayout(Dialog)
         self.gridLayout.setObjectName(u"gridLayout")
         self.scrollArea = QScrollArea(Dialog)
@@ -33,7 +33,7 @@ class Ui_Dialog(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1053, 864))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1053, 920))
         self.gridLayout_3 = QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.tabWidget = QTabWidget(self.scrollAreaWidgetContents)
@@ -203,6 +203,75 @@ class Ui_Dialog(object):
         self.groupBox_2.setSizePolicy(sizePolicy)
         self.gridLayout_6 = QGridLayout(self.groupBox_2)
         self.gridLayout_6.setObjectName(u"gridLayout_6")
+        self.groupBox_6 = QGroupBox(self.groupBox_2)
+        self.groupBox_6.setObjectName(u"groupBox_6")
+        sizePolicy.setHeightForWidth(self.groupBox_6.sizePolicy().hasHeightForWidth())
+        self.groupBox_6.setSizePolicy(sizePolicy)
+        self.verticalLayout_6 = QVBoxLayout(self.groupBox_6)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.label_21 = QLabel(self.groupBox_6)
+        self.label_21.setObjectName(u"label_21")
+
+        self.verticalLayout_6.addWidget(self.label_21)
+
+        self.horizontalLayout_8 = QHBoxLayout()
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.lineEdit_4 = QLineEdit(self.groupBox_6)
+        self.lineEdit_4.setObjectName(u"lineEdit_4")
+
+        self.horizontalLayout_8.addWidget(self.lineEdit_4)
+
+        self.toolButton_4 = QToolButton(self.groupBox_6)
+        self.toolButton_4.setObjectName(u"toolButton_4")
+
+        self.horizontalLayout_8.addWidget(self.toolButton_4)
+
+
+        self.verticalLayout_6.addLayout(self.horizontalLayout_8)
+
+        self.label_22 = QLabel(self.groupBox_6)
+        self.label_22.setObjectName(u"label_22")
+
+        self.verticalLayout_6.addWidget(self.label_22)
+
+        self.horizontalLayout_9 = QHBoxLayout()
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.lineEdit_5 = QLineEdit(self.groupBox_6)
+        self.lineEdit_5.setObjectName(u"lineEdit_5")
+
+        self.horizontalLayout_9.addWidget(self.lineEdit_5)
+
+        self.toolButton_5 = QToolButton(self.groupBox_6)
+        self.toolButton_5.setObjectName(u"toolButton_5")
+
+        self.horizontalLayout_9.addWidget(self.toolButton_5)
+
+
+        self.verticalLayout_6.addLayout(self.horizontalLayout_9)
+
+        self.label_23 = QLabel(self.groupBox_6)
+        self.label_23.setObjectName(u"label_23")
+
+        self.verticalLayout_6.addWidget(self.label_23)
+
+        self.horizontalLayout_10 = QHBoxLayout()
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.lineEdit_6 = QLineEdit(self.groupBox_6)
+        self.lineEdit_6.setObjectName(u"lineEdit_6")
+
+        self.horizontalLayout_10.addWidget(self.lineEdit_6)
+
+        self.toolButton_6 = QToolButton(self.groupBox_6)
+        self.toolButton_6.setObjectName(u"toolButton_6")
+
+        self.horizontalLayout_10.addWidget(self.toolButton_6)
+
+
+        self.verticalLayout_6.addLayout(self.horizontalLayout_10)
+
+
+        self.gridLayout_6.addWidget(self.groupBox_6, 0, 1, 1, 1)
+
         self.groupBox_5 = QGroupBox(self.groupBox_2)
         self.groupBox_5.setObjectName(u"groupBox_5")
         self.gridLayout_4 = QGridLayout(self.groupBox_5)
@@ -274,118 +343,14 @@ class Ui_Dialog(object):
 
         self.gridLayout_6.addWidget(self.groupBox_5, 0, 0, 1, 1)
 
-        self.groupBox_6 = QGroupBox(self.groupBox_2)
-        self.groupBox_6.setObjectName(u"groupBox_6")
-        sizePolicy.setHeightForWidth(self.groupBox_6.sizePolicy().hasHeightForWidth())
-        self.groupBox_6.setSizePolicy(sizePolicy)
-        self.verticalLayout_6 = QVBoxLayout(self.groupBox_6)
-        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
-        self.label_21 = QLabel(self.groupBox_6)
-        self.label_21.setObjectName(u"label_21")
-
-        self.verticalLayout_6.addWidget(self.label_21)
-
-        self.horizontalLayout_8 = QHBoxLayout()
-        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
-        self.lineEdit_4 = QLineEdit(self.groupBox_6)
-        self.lineEdit_4.setObjectName(u"lineEdit_4")
-
-        self.horizontalLayout_8.addWidget(self.lineEdit_4)
-
-        self.toolButton_4 = QToolButton(self.groupBox_6)
-        self.toolButton_4.setObjectName(u"toolButton_4")
-
-        self.horizontalLayout_8.addWidget(self.toolButton_4)
-
-
-        self.verticalLayout_6.addLayout(self.horizontalLayout_8)
-
-        self.label_22 = QLabel(self.groupBox_6)
-        self.label_22.setObjectName(u"label_22")
-
-        self.verticalLayout_6.addWidget(self.label_22)
-
-        self.horizontalLayout_9 = QHBoxLayout()
-        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
-        self.lineEdit_5 = QLineEdit(self.groupBox_6)
-        self.lineEdit_5.setObjectName(u"lineEdit_5")
-
-        self.horizontalLayout_9.addWidget(self.lineEdit_5)
-
-        self.toolButton_5 = QToolButton(self.groupBox_6)
-        self.toolButton_5.setObjectName(u"toolButton_5")
-
-        self.horizontalLayout_9.addWidget(self.toolButton_5)
-
-
-        self.verticalLayout_6.addLayout(self.horizontalLayout_9)
-
-        self.label_23 = QLabel(self.groupBox_6)
-        self.label_23.setObjectName(u"label_23")
-
-        self.verticalLayout_6.addWidget(self.label_23)
-
-        self.horizontalLayout_10 = QHBoxLayout()
-        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.lineEdit_6 = QLineEdit(self.groupBox_6)
-        self.lineEdit_6.setObjectName(u"lineEdit_6")
-
-        self.horizontalLayout_10.addWidget(self.lineEdit_6)
-
-        self.toolButton_6 = QToolButton(self.groupBox_6)
-        self.toolButton_6.setObjectName(u"toolButton_6")
-
-        self.horizontalLayout_10.addWidget(self.toolButton_6)
-
-
-        self.verticalLayout_6.addLayout(self.horizontalLayout_10)
-
-
-        self.gridLayout_6.addWidget(self.groupBox_6, 0, 1, 1, 1)
-
         self.groupBox_4 = QGroupBox(self.groupBox_2)
         self.groupBox_4.setObjectName(u"groupBox_4")
         self.gridLayout_7 = QGridLayout(self.groupBox_4)
         self.gridLayout_7.setObjectName(u"gridLayout_7")
-        self.label_14 = QLabel(self.groupBox_4)
-        self.label_14.setObjectName(u"label_14")
+        self.label_16 = QLabel(self.groupBox_4)
+        self.label_16.setObjectName(u"label_16")
 
-        self.gridLayout_7.addWidget(self.label_14, 0, 0, 1, 1)
-
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.label_4 = QLabel(self.groupBox_4)
-        self.label_4.setObjectName(u"label_4")
-
-        self.horizontalLayout.addWidget(self.label_4)
-
-        self.doubleSpinBox_low_1 = QDoubleSpinBox(self.groupBox_4)
-        self.doubleSpinBox_low_1.setObjectName(u"doubleSpinBox_low_1")
-        self.doubleSpinBox_low_1.setDecimals(3)
-        self.doubleSpinBox_low_1.setMaximum(9999.989999999999782)
-        self.doubleSpinBox_low_1.setValue(570.000000000000000)
-
-        self.horizontalLayout.addWidget(self.doubleSpinBox_low_1)
-
-        self.label_5 = QLabel(self.groupBox_4)
-        self.label_5.setObjectName(u"label_5")
-
-        self.horizontalLayout.addWidget(self.label_5)
-
-        self.doubleSpinBox_upp_1 = QDoubleSpinBox(self.groupBox_4)
-        self.doubleSpinBox_upp_1.setObjectName(u"doubleSpinBox_upp_1")
-        self.doubleSpinBox_upp_1.setMaximum(9999.989999999999782)
-        self.doubleSpinBox_upp_1.setValue(700.000000000000000)
-
-        self.horizontalLayout.addWidget(self.doubleSpinBox_upp_1)
-
-
-        self.gridLayout_7.addLayout(self.horizontalLayout, 1, 0, 1, 1)
-
-        self.label_15 = QLabel(self.groupBox_4)
-        self.label_15.setObjectName(u"label_15")
-
-        self.gridLayout_7.addWidget(self.label_15, 2, 0, 1, 1)
+        self.gridLayout_7.addWidget(self.label_16, 6, 0, 1, 1)
 
         self.horizontalLayout_5 = QHBoxLayout()
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
@@ -417,11 +382,6 @@ class Ui_Dialog(object):
 
         self.gridLayout_7.addLayout(self.horizontalLayout_5, 3, 0, 1, 1)
 
-        self.label_17 = QLabel(self.groupBox_4)
-        self.label_17.setObjectName(u"label_17")
-
-        self.gridLayout_7.addWidget(self.label_17, 4, 0, 1, 1)
-
         self.horizontalLayout_6 = QHBoxLayout()
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.label_8 = QLabel(self.groupBox_4)
@@ -451,10 +411,55 @@ class Ui_Dialog(object):
 
         self.gridLayout_7.addLayout(self.horizontalLayout_6, 5, 0, 1, 1)
 
-        self.label_16 = QLabel(self.groupBox_4)
-        self.label_16.setObjectName(u"label_16")
+        self.label_20 = QLabel(self.groupBox_4)
+        self.label_20.setObjectName(u"label_20")
 
-        self.gridLayout_7.addWidget(self.label_16, 6, 0, 1, 1)
+        self.gridLayout_7.addWidget(self.label_20, 8, 0, 1, 1)
+
+        self.label_14 = QLabel(self.groupBox_4)
+        self.label_14.setObjectName(u"label_14")
+
+        self.gridLayout_7.addWidget(self.label_14, 0, 0, 1, 1)
+
+        self.label_15 = QLabel(self.groupBox_4)
+        self.label_15.setObjectName(u"label_15")
+
+        self.gridLayout_7.addWidget(self.label_15, 2, 0, 1, 1)
+
+        self.label_17 = QLabel(self.groupBox_4)
+        self.label_17.setObjectName(u"label_17")
+
+        self.gridLayout_7.addWidget(self.label_17, 4, 0, 1, 1)
+
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.label_4 = QLabel(self.groupBox_4)
+        self.label_4.setObjectName(u"label_4")
+
+        self.horizontalLayout.addWidget(self.label_4)
+
+        self.doubleSpinBox_low_1 = QDoubleSpinBox(self.groupBox_4)
+        self.doubleSpinBox_low_1.setObjectName(u"doubleSpinBox_low_1")
+        self.doubleSpinBox_low_1.setDecimals(3)
+        self.doubleSpinBox_low_1.setMaximum(9999.989999999999782)
+        self.doubleSpinBox_low_1.setValue(570.000000000000000)
+
+        self.horizontalLayout.addWidget(self.doubleSpinBox_low_1)
+
+        self.label_5 = QLabel(self.groupBox_4)
+        self.label_5.setObjectName(u"label_5")
+
+        self.horizontalLayout.addWidget(self.label_5)
+
+        self.doubleSpinBox_upp_1 = QDoubleSpinBox(self.groupBox_4)
+        self.doubleSpinBox_upp_1.setObjectName(u"doubleSpinBox_upp_1")
+        self.doubleSpinBox_upp_1.setMaximum(9999.989999999999782)
+        self.doubleSpinBox_upp_1.setValue(700.000000000000000)
+
+        self.horizontalLayout.addWidget(self.doubleSpinBox_upp_1)
+
+
+        self.gridLayout_7.addLayout(self.horizontalLayout, 1, 0, 1, 1)
 
         self.horizontalLayout_7 = QHBoxLayout()
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
@@ -483,16 +488,31 @@ class Ui_Dialog(object):
 
         self.gridLayout_7.addLayout(self.horizontalLayout_7, 7, 0, 1, 1)
 
-        self.label_20 = QLabel(self.groupBox_4)
-        self.label_20.setObjectName(u"label_20")
-
-        self.gridLayout_7.addWidget(self.label_20, 8, 0, 1, 1)
-
 
         self.gridLayout_6.addWidget(self.groupBox_4, 0, 2, 1, 1)
 
 
         self.gridLayout_8.addWidget(self.groupBox_2, 2, 0, 1, 1)
+
+        self.label_24 = QLabel(self.tab)
+        self.label_24.setObjectName(u"label_24")
+
+        self.gridLayout_8.addWidget(self.label_24, 3, 0, 1, 1)
+
+        self.horizontalLayout_11 = QHBoxLayout()
+        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
+        self.lineEdit_7 = QLineEdit(self.tab)
+        self.lineEdit_7.setObjectName(u"lineEdit_7")
+
+        self.horizontalLayout_11.addWidget(self.lineEdit_7)
+
+        self.toolButton_7 = QToolButton(self.tab)
+        self.toolButton_7.setObjectName(u"toolButton_7")
+
+        self.horizontalLayout_11.addWidget(self.toolButton_7)
+
+
+        self.gridLayout_8.addLayout(self.horizontalLayout_11, 4, 0, 1, 1)
 
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QWidget()
@@ -593,11 +613,6 @@ class Ui_Dialog(object):
         self.tableWidget.setSortingEnabled(__sortingEnabled)
 
         self.groupBox_2.setTitle(QCoreApplication.translate("Dialog", u"Weights and Range", None))
-        self.groupBox_5.setTitle(QCoreApplication.translate("Dialog", u"Assign weights", None))
-        self.label_10.setText(QCoreApplication.translate("Dialog", u"Elevation", None))
-        self.label_13.setText(QCoreApplication.translate("Dialog", u"Slope", None))
-        self.label_11.setText(QCoreApplication.translate("Dialog", u"Proximity to WaterBodies", None))
-        self.label_12.setText(QCoreApplication.translate("Dialog", u"Rainfall ", None))
         self.groupBox_6.setTitle(QCoreApplication.translate("Dialog", u"Range-Color", None))
         self.label_21.setText(QCoreApplication.translate("Dialog", u"High", None))
         self.lineEdit_4.setPlaceholderText(QCoreApplication.translate("Dialog", u"#FF0000", None))
@@ -608,20 +623,28 @@ class Ui_Dialog(object):
         self.label_23.setText(QCoreApplication.translate("Dialog", u"Low", None))
         self.lineEdit_6.setPlaceholderText(QCoreApplication.translate("Dialog", u"#FFFF00", None))
         self.toolButton_6.setText(QCoreApplication.translate("Dialog", u"...", None))
+        self.groupBox_5.setTitle(QCoreApplication.translate("Dialog", u"Assign weights", None))
+        self.label_10.setText(QCoreApplication.translate("Dialog", u"Elevation", None))
+        self.label_13.setText(QCoreApplication.translate("Dialog", u"Slope", None))
+        self.label_11.setText(QCoreApplication.translate("Dialog", u"Proximity to WaterBodies", None))
+        self.label_12.setText(QCoreApplication.translate("Dialog", u"Rainfall ", None))
         self.groupBox_4.setTitle(QCoreApplication.translate("Dialog", u"Middle Range", None))
-        self.label_14.setText(QCoreApplication.translate("Dialog", u"Elevation", None))
-        self.label_4.setText(QCoreApplication.translate("Dialog", u"Lower Limit", None))
-        self.label_5.setText(QCoreApplication.translate("Dialog", u"Upper Limit", None))
-        self.label_15.setText(QCoreApplication.translate("Dialog", u"Slope", None))
+        self.label_16.setText(QCoreApplication.translate("Dialog", u"Proximity to WaterBodies", None))
         self.label_6.setText(QCoreApplication.translate("Dialog", u"Lower Limit", None))
         self.label_7.setText(QCoreApplication.translate("Dialog", u"Upper Limit", None))
-        self.label_17.setText(QCoreApplication.translate("Dialog", u"Rainfall ", None))
         self.label_8.setText(QCoreApplication.translate("Dialog", u"Lower Limit", None))
         self.label_9.setText(QCoreApplication.translate("Dialog", u"Upper Limit", None))
-        self.label_16.setText(QCoreApplication.translate("Dialog", u"Proximity to WaterBodies", None))
+        self.label_20.setText(QCoreApplication.translate("Dialog", u"Note: Lower class and Higher class will be assumed based on above range", None))
+        self.label_14.setText(QCoreApplication.translate("Dialog", u"Elevation", None))
+        self.label_15.setText(QCoreApplication.translate("Dialog", u"Slope", None))
+        self.label_17.setText(QCoreApplication.translate("Dialog", u"Rainfall ", None))
+        self.label_4.setText(QCoreApplication.translate("Dialog", u"Lower Limit", None))
+        self.label_5.setText(QCoreApplication.translate("Dialog", u"Upper Limit", None))
         self.label_18.setText(QCoreApplication.translate("Dialog", u"Lower Limit", None))
         self.label_19.setText(QCoreApplication.translate("Dialog", u"Upper Limit", None))
-        self.label_20.setText(QCoreApplication.translate("Dialog", u"Note: Lower class and Higher class will be assumed based on above range", None))
+        self.label_24.setText(QCoreApplication.translate("Dialog", u"Save Path", None))
+        self.lineEdit_7.setText(QCoreApplication.translate("Dialog", u"Risk_Zone.tif", None))
+        self.toolButton_7.setText(QCoreApplication.translate("Dialog", u"...", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("Dialog", u"Input", None))
         self.textBrowser.setHtml(QCoreApplication.translate("Dialog", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"

@@ -5,29 +5,18 @@ from PySide6.QtCore import Qt, QProcess
 from FRIZ_ui import Ui_Dialog  # Your converted UI file
 from PySide6.QtGui import QColor
 
-class QTextBrowserLogger:
-    """
-    Custom logger to redirect stdout and stderr to both the console and a QTextBrowser.
-    """
-    def __init__(self, text_browser):
-        self.text_browser = text_browser
-
-    def write(self, message):
-        if message.strip():  # Avoid logging empty lines
-            self.text_browser.append(message)  # Write to QTextBrowser
-            print(message, end="")  # Write to console
-
-    def flush(self):
-        pass  # Required for compatibility with sys.stdout and sys.stderr
-
 class FileInputDialog(QDialog, Ui_Dialog):
+    def select_color_and_update_line_edit(self, line_edit):
+    # Open a color dialog and get the selected color
+        color = QColorDialog.getColor()
+        if color.isValid():
+            hex_color = color.name()  # This returns the hex string (e.g., "#FF0000")
+            line_edit.setText(hex_color)
+            return hex_color
+        return None
     def __init__(self):
         super().__init__()
         self.setupUi(self)  # Initialize UI
-
-        # Redirect stdout and stderr to the QTextBrowser
-        sys.stdout = QTextBrowserLogger(self.textBrowser)
-        sys.stderr = QTextBrowserLogger(self.textBrowser)
 
         # Connect file browse buttons to file selection functions
         self.toolButton.clicked.connect(lambda: self.select_file(self.lineEdit))
@@ -44,6 +33,9 @@ class FileInputDialog(QDialog, Ui_Dialog):
         self.toolButton_5.clicked.connect(lambda: self.select_color_and_update_line_edit(self.lineEdit_5))
         self.toolButton_6.clicked.connect(lambda: self.select_color_and_update_line_edit(self.lineEdit_6))
 
+        # Connect the new save file button (toolButton_7) to open a save dialog and update lineEdit_7
+        self.toolButton_7.clicked.connect(lambda: self.select_save_file(self.lineEdit_7))
+
         # Connect the AHP calculation button to update the weight boxes
         self.pushButton_2.clicked.connect(self.calculate_ahp)
         
@@ -51,22 +43,6 @@ class FileInputDialog(QDialog, Ui_Dialog):
         self.pushButton.clicked.connect(self.run_script)
         
         self.process = None
-        
-    def select_color_and_update_line_edit(self, line_edit):
-    # Open a color dialog and get the selected color
-        color = QColorDialog.getColor()
-        if color.isValid():
-            hex_color = color.name()  # This returns the hex string (e.g., "#FF0000")
-            line_edit.setText(hex_color)
-            return hex_color
-        return None
-
-    def log_message(self, message):
-        """
-        Appends a log message to the QTextBrowser and prints it to the console.
-        """
-        self.textBrowser.append(message)  # Display in QTextBrowser
-        print(message)  # Print to console
 
     def select_file(self, line_edit):
         """Opens a file dialog and sets the selected file path into the given QLineEdit."""
@@ -107,6 +83,11 @@ class FileInputDialog(QDialog, Ui_Dialog):
         CR = CI / RI if RI != 0 else 0.0
 
         return ahp_weights, CR
+    def select_save_file(self, line_edit):
+        """Opens a save file dialog and sets the selected output file path into the given QLineEdit."""
+        file_path, _ = QFileDialog.getSaveFileName(self, "Save File", "", "TIFF Files (*.tif);;All Files (*.*)")
+        if file_path:
+            line_edit.setText(file_path)
 
     def calculate_ahp(self):
         """Calculates AHP weights from the tableWidget and updates the double spin boxes."""
@@ -131,73 +112,61 @@ class FileInputDialog(QDialog, Ui_Dialog):
         Then starts the external script (slopeelerainprox.py) via QProcess,
         passing all these values as command-line arguments.
         """
-        try:
-            # Gather inputs and log them
-            self.log_message("Starting script execution...")
-            # File paths
-            Dem = self.lineEdit.text()
-            Rainfall = self.lineEdit_2.text()
-            Proximity = self.lineEdit_3.text()
-            # AHP weight values
-            elevation_weight = str(self.doubleSpinBox_weigh_1.value())
-            slope_weight = str(self.doubleSpinBox_weigh_2.value())
-            proximity_weight = str(self.doubleSpinBox_weigh_3.value())
-            rainfall_weight = str(self.doubleSpinBox_weigh_4.value())
-            # Middle range values (from groupBox_4)
-            middle_lower_elev = str(self.doubleSpinBox_low_1.value())
-            middle_upper_elev = str(self.doubleSpinBox_upp_1.value())
-            middle_lower_slope = str(self.doubleSpinBox_low_2.value())
-            middle_upper_slope = str(self.doubleSpinBox_upp_2.value())
-            middle_lower_rain = str(self.doubleSpinBox_low_3.value())
-            middle_upper_rain = str(self.doubleSpinBox_upp_3.value())
-            middle_lower_prox = str(self.doubleSpinBox_low_4.value())
-            middle_upper_prox = str(self.doubleSpinBox_upp_4.value())
+        # File paths
+        Dem = self.lineEdit.text()
+        Rainfall = self.lineEdit_2.text()
+        Proximity = self.lineEdit_3.text()
+        # AHP weight values
+        elevation_weight = str(self.doubleSpinBox_weigh_1.value())
+        slope_weight = str(self.doubleSpinBox_weigh_2.value())
+        proximity_weight = str(self.doubleSpinBox_weigh_3.value())
+        rainfall_weight = str(self.doubleSpinBox_weigh_4.value())
+        # Middle range values (from groupBox_4)
+        middle_lower_elev = str(self.doubleSpinBox_low_1.value())
+        middle_upper_elev = str(self.doubleSpinBox_upp_1.value())
+        middle_lower_slope = str(self.doubleSpinBox_low_2.value())
+        middle_upper_slope = str(self.doubleSpinBox_upp_2.value())
+        middle_lower_rain = str(self.doubleSpinBox_low_3.value())
+        middle_upper_rain = str(self.doubleSpinBox_upp_3.value())
+        middle_lower_prox = str(self.doubleSpinBox_low_4.value())
+        middle_upper_prox = str(self.doubleSpinBox_upp_4.value())
 
-            # Color of classes
-            High = self.lineEdit_4.text()
-            Medium = self.lineEdit_5.text()
-            Low = self.lineEdit_6.text()
+        # Color of classes
+        High = self.lineEdit_4.text()
+        Medium = self.lineEdit_5.text()
+        Low = self.lineEdit_6.text()
 
-            # Log the gathered inputs
-            self.log_message("Starting script execution...")
-            self.log_message(f"DEM: {Dem}")
-            self.log_message(f"Rainfall: {Rainfall}")
-            self.log_message(f"Proximity: {Proximity}")
-            self.log_message(f"Weights: Elevation={elevation_weight}, Slope={slope_weight}, Proximity={proximity_weight}, Rainfall={rainfall_weight}")
-            self.log_message(f"Middle Ranges: Elevation=({middle_lower_elev}, {middle_upper_elev}), Slope=({middle_lower_slope}, {middle_upper_slope}), "
-                            f"Rainfall=({middle_lower_rain}, {middle_upper_rain}), Proximity=({middle_lower_prox}, {middle_upper_prox})")
-            self.log_message(f"Colors: High={High}, Medium={Medium}, Low={Low}")
-
-            # Create and configure QProcess
-            self.process = QProcess(self)
-            self.process.readyReadStandardOutput.connect(
-                lambda: print(self.process.readAllStandardOutput().data().decode())
-            )
-            self.process.readyReadStandardError.connect(
-                lambda: print(self.process.readAllStandardError().data().decode())
-            )
-            script_path = r"C:/Users/Admin/Documents/GitHub/Flood/Features/slopeelerainprox.py"
-            # Build the argument list. Adjust the order as required by your external script.
-            args = [
-                script_path,
-                Dem, Rainfall, Proximity,
-                elevation_weight, slope_weight, proximity_weight, rainfall_weight,
-                middle_lower_elev, middle_upper_elev,
-                middle_lower_slope, middle_upper_slope,
-                middle_lower_rain, middle_upper_rain,
-                middle_lower_prox, middle_upper_prox,
-                High, Medium, Low
-            ]
-            self.process.start(sys.executable, args)
-        except Exception as e:
-            print(f"Error: {e}")  # This will also appear in the QTextBrowser
+        # Save file path
+        save_file = self.lineEdit_7.text()
+        # Create and configure QProcess
+        self.process = QProcess(self)
+        self.process.readyReadStandardOutput.connect(
+            lambda: print(self.process.readAllStandardOutput().data().decode())
+        )
+        self.process.readyReadStandardError.connect(
+            lambda: print(self.process.readAllStandardError().data().decode())
+        )
+        script_path = r"./Features/slopeelerainprox.py"
+        # Build the argument list. Adjust the order as required by your external script.
+        args = [
+            script_path,
+            Dem, Rainfall, Proximity,
+            elevation_weight, slope_weight, proximity_weight, rainfall_weight,
+            middle_lower_elev, middle_upper_elev,
+            middle_lower_slope, middle_upper_slope,
+            middle_lower_rain, middle_upper_rain,
+            middle_lower_prox, middle_upper_prox,
+            High, Medium, Low,
+            save_file
+        ]
+        self.process.start(sys.executable, args)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
     # Try to load the style.qss file
     try:
-        with open("C:/Users/Admin/Documents/GitHub/Flood/GUI/style.qss", "r") as f:
+        with open("./GUI/style.qss", "r") as f:
             qss = f.read()
             app.setStyleSheet(qss)
     except Exception as e:
