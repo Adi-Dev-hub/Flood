@@ -61,8 +61,9 @@ if __name__ == "__main__":
         print("Classifying slope into risk levels...")
         slope_risk = classify_slope(slope)
 
-        print("Saving slope risk raster...")
-        save_raster(output_path, slope_risk, dataset.GetGeoTransform(), dataset.GetProjection(), nodata_val=nodata_value)
+        if output_path is  not"temp_slope.tif":
+            print("Saving slope risk raster...")
+            save_raster(output_path, slope_risk, dataset.GetGeoTransform(), dataset.GetProjection(), nodata_val=nodata_value)
 
         print("Displaying slope risk map...")
         display_raster(slope_risk, title="Slope Risk Map")

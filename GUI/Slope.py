@@ -33,7 +33,7 @@ class SlopeDialog(QDialog):
         if not input_path or not output_path:
             QMessageBox.warning(self, "Missing Input", "Please provide both input and output raster paths.")
             return
-
+        if output_path == " ":output_path ="temp_slope.tif"
         # If nodata_value is empty, pass a default like "None"
         nodata_value = nodata_value if nodata_value else "-1"
 
